@@ -1,0 +1,18 @@
+# Données (re-téléchargeables via scripts/download_data.py)
+data/raw/
+data/processed/
+*.part
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
