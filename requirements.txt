@@ -3,3 +3,4 @@ pandas>=2.0
 scikit-learn>=1.2
 pyarrow>=14
 psutil>=5.9
+duckdb>=1.1
