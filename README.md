@@ -140,6 +140,12 @@ comme **outil d'assistance** et non comme auteur de l'analyse.
 - **Biais** : l'IA peut orienter l'analyse vers des approches « standard ». Les options proposées sont discutées, et le choix final est justifié dans les notebooks.
 - **Traçabilité** : les décisions prises à chaque étape sont consignées dans les notebooks, avec leur justification.
 
+### Le process
+
+Dans un premier temps on va chercher à comprendre la data donc pour ce faire, nous allons détailler l'ordre des étapes selon lesquelles nous avons procédé : 
+1. Analyse des fichiers BODACC, SIRENE, RATIOS
+2. Une fois l'analyse ok, on va venir nettoyer les données
+
 ## Annexe : mise en route
 
 ```bash
