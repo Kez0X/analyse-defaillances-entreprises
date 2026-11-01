@@ -206,6 +206,50 @@ Questions :
 
 ---
 
+# Le rendu : un dashboard Dash
+
+La consigne : appliquer **au moins la moitié des TP** sur un jeu de données réel et restituer le tout dans un **dashboard Dash**. C'est un « petit » projet : il n'est pas demandé d'aller plus loin dans l'analyse.
+
+## Les TP couverts
+
+| TP | Où on l'applique |
+|---|---|
+| TP1 : exploration, nettoyage, statistiques | Notebooks d'exploration et de nettoyage (déjà faits), partie A |
+| TP2 : clustering | Axes 10 et 11 |
+| TP3 : réseaux | Axes 6 à 9 |
+| TP4 : transformation (ACP, t-SNE, similarité → graphe → node2vec) | Axes 8 et 10 |
+
+## Une page du dashboard par partie
+
+| Page | Contenu |
+|---|---|
+| Vue d'ensemble | Axes 1 à 4 : courbes, cartes et tableaux, avec des filtres (période, secteur, territoire) qui s'appuient sur le cube |
+| Parcours des procédures | Axe 6 : le graphe des étapes |
+| Réseaux | Axes 7 à 9 : graphes et communautés, carte des départements |
+| Profils financiers | Axes 5, 10 et 11 : ACP, clusters, t-SNE, taux de faillite par cluster |
+| Bonus : prédiction | Axe 12 |
+
+## Répartition dans le binôme
+
+| | Luka | Lucas |
+|---|---|---|
+| Analyses | **Cube OLAP**, graphes (axes 6 à 9), profils financiers et typologies (axes 10, 11), bonus (axe 12) | Analyses de base : vue d'ensemble (axes 1 à 4) et santé financière (axe 5) |
+| TP appliqués | TP3 (réseaux), TP2 (clustering), TP4 (ACP, t-SNE, node2vec) | TP1 (statistiques descriptives, tests, visualisation) |
+| Pages Dash | Parcours des procédures, Réseaux, Profils financiers, Prédiction | Vue d'ensemble |
+
+À se mettre d'accord ensemble au début :
+- l'**ossature de l'application Dash** (navigation entre les pages) ;
+- le **format des fichiers de résultats** dans `data/dashboard/`.
+
+Dépendance : les axes 1 à 4 de Lucas s'appuient sur le **cube** de Luka. Le cube est donc à faire **en premier**, pour que Lucas puisse avancer.
+
+## Organisation technique
+
+- Les **notebooks d'analyse** font les calculs lourds et **exportent des petits fichiers de résultats** (cube pré-agrégé, nœuds et arêtes des graphes, coordonnées ACP et t-SNE d'un échantillon, clusters) dans un dossier dédié, par exemple `data/dashboard/`.
+- L'application Dash **ne lit que ces petits fichiers**. Elle ne doit jamais charger SIRENE ou les ratios complets, sinon elle sera lente et saturera la RAM.
+
+---
+
 ## Limites à garder en tête pour toutes les analyses
 
 - **Annonces sans SIREN** (9 %) : gardées pour les comptages dans le temps et par territoire, mais on ne peut pas les relier à SIRENE ni aux ratios.
