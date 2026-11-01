@@ -26,6 +26,9 @@ from pathlib import Path
 
 import requests
 
+# Certaines annonces BODACC ont des champs texte de plus de 128 Ko (limite par défaut)
+csv.field_size_limit(sys.maxsize)
+
 ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw"
 DOCS_DIR = ROOT / "docs"
