@@ -197,3 +197,109 @@ def en_construction(titre, surtitre, axes, methodes, auteur):
 def nombre(n):
     """12345 -> '12 345' (espace insécable des milliers)."""
     return f"{n:,.0f}".replace(",", " ")
+
+
+# --------------------------------------------------------------------------- graphiques partagés
+def couleur_groupe(i):
+    """Couleur du groupe / de la communauté n° i (1, 2, 3…), dans l'ordre fixe des séries."""
+    return SERIES[(int(i) - 1) % len(SERIES)]
+
+
+def figure_reseau(noeuds, aretes, x, y, groupe, taille, survol, source="source", cible="cible",
+                  libelle_groupe="Communauté", texte=None, taille_max=34):
+    """Réseau plotly : arêtes grises en fond, nœuds colorés par groupe (une trace par groupe = une légende).
+
+    noeuds : DataFrame avec l'identifiant en index, les colonnes x, y, groupe, taille et survol (texte de l'infobulle).
+    aretes : DataFrame avec les colonnes source et cible (identifiants des nœuds).
+    texte  : colonne à écrire à côté des nœuds (None = aucun texte).
+    """
+    pos = noeuds[[x, y]]
+    a = aretes[aretes[source].isin(pos.index) & aretes[cible].isin(pos.index)]
+    xs, ys = [], []
+    for u, v in zip(a[source], a[cible]):
+        xs += [pos.at[u, x], pos.at[v, x], None]
+        ys += [pos.at[u, y], pos.at[v, y], None]
+    fig = go.Figure(go.Scatter(x=xs, y=ys, mode="lines", line=dict(width=0.6, color="rgba(137,135,129,0.28)"),
+                               hoverinfo="skip", showlegend=False))
+    t = noeuds[taille]
+    tailles = 8 + (taille_max - 8) * (t - t.min()) / max(t.max() - t.min(), 1e-9)
+    for g in sorted(noeuds[groupe].dropna().unique()):
+        m = noeuds[groupe] == g
+        fig.add_trace(go.Scatter(
+            x=noeuds.loc[m, x], y=noeuds.loc[m, y], mode="markers+text" if texte else "markers",
+            text=noeuds.loc[m, texte] if texte else None, textposition="top center",
+            textfont=dict(size=10, color=ENCRE["secondaire"]),
+            marker=dict(size=tailles[m], color=couleur_groupe(g), line=dict(width=1.5, color=SURFACE["carte"])),
+            hovertext=noeuds.loc[m, survol], hoverinfo="text", name=f"{libelle_groupe} {int(g)}"))
+    fig.update_layout(xaxis=dict(visible=False), yaxis=dict(visible=False), margin=dict(l=8, r=8, t=40, b=8),
+                      hovermode="closest")
+    return fig
+
+
+def tableau(df, id_=None, hauteur=None):
+    """Tableau simple aux couleurs du design system."""
+    import dash_bootstrap_components as dbc
+    return html.Div(dbc.Table.from_dataframe(df, striped=False, bordered=False, hover=True, size="sm",
+                                             className="ds-table", style={"fontSize": "13px"}),
+                    className="ds-table-wrap")
+
+
+# --------------------------------------------------------------------------- questions et réponses
+def question(titre, reponse, *contenu, id_=None, numero=None):
+    """Un bloc « question → réponse → preuve » : la question en titre, la réponse mise en avant, puis le graphique."""
+    options = {"id": id_} if id_ else {}
+    return html.Section([
+        html.Div([
+            html.Span(f"Question {numero}" if numero else "Question", className="ds-question__label"),
+            html.H2(titre, className="ds-question__titre"),
+        ]),
+        html.P(reponse, className="ds-question__reponse"),
+        *contenu,
+    ], className="ds-question", **options)
+
+
+def methode(*contenu, titre="Comment on l'a obtenu"):
+    """Bloc repliable pour le détail technique (fermé par défaut)."""
+    return html.Details([html.Summary(titre, className="ds-methode__titre"), html.Div(contenu, className="ds-methode__corps")],
+                        className="ds-methode")
+
+
+def reponse_cle(texte, lien, libelle_lien):
+    """Une carte de l'accueil : une réponse courte et le lien vers la page qui la démontre."""
+    return dcc.Link(html.Div([
+        html.P(texte, className="ds-retenir__texte"),
+        html.Span(libelle_lien + " →", className="ds-retenir__lien"),
+    ], className="ds-card ds-retenir"), href=lien, className="ds-link-card")
+
+
+def gris_sauf(n, indices, couleur=ACCENT, fond="#d6d4cc"):
+    """Liste de couleurs : tout en gris, sauf les éléments à mettre en évidence."""
+    return [couleur if i in indices else fond for i in range(n)]
+
+
+# --------------------------------------------------------------------------- périmètre (filtres globaux)
+GRIS_FRANCE = "#b5b3ab"  # la référence nationale, en gris, quand un périmètre est choisi
+
+
+def zoom(id_):
+    """Emplacement, sous la réponse nationale, du texte « dans votre périmètre » (rempli par un callback)."""
+    return html.Div(id=id_)
+
+
+def encart_perimetre(libelle, *texte, prudence=None):
+    """Le texte « dans votre périmètre ». prudence : message si les effectifs sont trop petits pour conclure."""
+    return html.Div([html.Span(libelle, className="ds-zoom__label"), *texte,
+                     html.Div(prudence, style={"marginTop": "4px", "color": ENCRE["secondaire"]}) if prudence else None],
+                    className="ds-zoom ds-zoom--prudence" if prudence else "ds-zoom")
+
+
+def pct(v, decimales=0):
+    if v != v:  # NaN : pas assez de données
+        return "—"
+    return f"{v:.{decimales}f} %".replace(".", ",")
+
+
+def pour_mille(v):
+    if v != v:
+        return "—"
+    return f"{v:.1f} ‰".replace(".", ",")

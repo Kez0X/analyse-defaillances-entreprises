@@ -238,3 +238,78 @@ code { background: var(--surface-sunken); color: var(--ink-primary); padding: 1p
   .ds-shell { flex-direction: column; }
   .ds-main { margin-left: 0; padding: var(--space-4); }
 }
+
+/* Tableaux */
+.ds-table { margin: 0; color: var(--ink-primary); }
+.ds-table thead th { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-secondary);
+  font-weight: 600; border-bottom: 1px solid var(--border); background: transparent; }
+.ds-table td { border-color: var(--border); font-variant-numeric: tabular-nums; background: transparent; }
+.ds-table tbody tr:hover td { background: var(--surface-sunken); }
+
+/* Onglets */
+.ds-tabs .nav-link { color: var(--ink-secondary); font-weight: 500; font-size: var(--text-sm); border: none; padding: 8px 14px; }
+.ds-tabs .nav-link.active { color: var(--ink-primary); background: transparent; border-bottom: 2px solid var(--accent); }
+.ds-tabs { border-bottom: 1px solid var(--border); margin-bottom: var(--space-4); }
+
+.ds-table-wrap { overflow-x: auto; }
+
+/* ==========================================================================
+   Questions / réponses
+   ========================================================================== */
+.ds-question { margin: var(--space-6) 0 var(--space-5); }
+.ds-question__label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.ds-question__titre { font-size: 22px; font-weight: 680; margin: 2px 0 var(--space-2); }
+.ds-question__reponse {
+  font-size: 17px; line-height: 1.5; color: var(--ink-primary); max-width: 900px;
+  border-left: 4px solid var(--accent); padding: 2px 0 2px var(--space-4); margin: 0 0 var(--space-4);
+}
+.ds-question__reponse b, .ds-question__reponse strong { color: var(--accent-strong); }
+
+/* Bloc repliable « Comment on l'a obtenu » */
+.ds-methode { margin: var(--space-6) 0; border: 1px dashed var(--border); border-radius: var(--radius-lg); background: transparent; }
+.ds-methode__titre { cursor: pointer; padding: var(--space-3) var(--space-4); font-weight: 600; color: var(--ink-secondary); font-size: var(--text-sm); }
+.ds-methode__titre:hover { color: var(--ink-primary); }
+.ds-methode[open] .ds-methode__titre { border-bottom: 1px dashed var(--border); }
+.ds-methode__corps { padding: var(--space-4); }
+
+/* Cartes « Ce qu'il faut retenir » (accueil) */
+.ds-retenir { display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-3); }
+.ds-retenir__texte { font-size: var(--text-md); line-height: 1.5; color: var(--ink-primary); margin: 0; }
+.ds-retenir__texte b { color: var(--accent-strong); }
+.ds-retenir__lien { font-size: var(--text-xs); font-weight: 600; color: var(--accent); }
+
+/* ==========================================================================
+   Périmètre global (secteur, région) : filtres de la barre latérale + bandeau
+   ========================================================================== */
+.ds-perimetre { display: flex; flex-direction: column; gap: 4px; padding: 0 var(--space-2); }
+.ds-perimetre__label { font-size: var(--text-xs); color: var(--ink-on-dark-muted); margin-top: 4px; }
+.ds-perimetre .dash-dropdown { font-size: var(--text-sm); color: var(--ink-primary); }
+.ds-bandeau {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2);
+  margin: 0 0 var(--space-4); padding: 10px var(--space-4);
+  background: #e8f1fc; border: 1px solid #9ec5f4; border-radius: var(--radius-md);
+  font-size: var(--text-sm); color: var(--ink-primary);
+}
+.ds-bandeau__label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+.ds-bandeau__detail { color: var(--ink-secondary); }
+
+/* Encart « dans votre périmètre », sous la réponse nationale d'une question */
+.ds-zoom { margin: -4px 0 var(--space-3); padding: 10px var(--space-4); border-left: 3px solid var(--accent);
+           background: var(--surface-card, #fcfcfb); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+           font-size: var(--text-sm); color: var(--ink-primary); }
+.ds-zoom__label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
+                  margin-right: var(--space-2); }
+.ds-zoom--prudence { border-left-color: var(--status-warning, #fab219); }
+
+/* Fil rouge de l'accueil */
+.ds-filrouge__titre { font-size: 22px; font-weight: 700; margin: 0 0 4px; }
+.ds-filrouge__texte { font-size: var(--text-base, 15px); color: var(--ink-secondary); margin: 0 0 var(--space-4); max-width: 900px; }
+.ds-section__titre { font-size: 20px; font-weight: 680; margin: 8px 0 4px; }
+.ds-section__intro { color: var(--ink-secondary); font-size: var(--text-sm); margin: 0 0 16px; }
+
+/* Page Méthodes */
+.ds-methode-cours { height: 100%; }
+.ds-methode-cours__nom { font-size: var(--text-base, 15px); font-weight: 650; margin: 0 0 4px; }
+.ds-methode-cours__role { font-size: var(--text-xs); color: var(--ink-secondary); text-transform: uppercase; letter-spacing: .05em; }
+.ds-methode-cours p { font-size: var(--text-sm); margin: 6px 0; }
